@@ -1,0 +1,4 @@
+build
+cmake-build-release-wsl
+.clion.source.upload.marker
+.idea
