@@ -63,7 +63,7 @@ namespace network{
         poller_->removeChannel(channel);
     }
     bool EventLoop::hasChannel(network::Channel *channel) {
-        poller_->hasChannel(channel);
+        return poller_->hasChannel(channel);
     }
 
     // 调动底层poller事件分发器, 监听事件
