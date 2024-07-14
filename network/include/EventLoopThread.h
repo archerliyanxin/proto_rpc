@@ -4,6 +4,7 @@
 #include "mutex"
 #include "thread"
 #include "functional"
+#include "vector"
 namespace network{
     class EventLoop;
     class EventLoopThread{
@@ -15,6 +16,7 @@ namespace network{
         ~EventLoopThread();
 
         EventLoop* startLoop();
+
     private:
         void Thread_func();
     private:

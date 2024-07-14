@@ -12,7 +12,7 @@ namespace network{
         uint16_t get_port();
         std::string get_ip_port();
         void set_socketAddr(const sockaddr_in &addr){ addr_ = addr;}
-        const sockaddr_in* get_socketAddr(){return &addr_;};
+        const sockaddr_in* get_socketAddr() const{return &addr_;};
 
     private:
         sockaddr_in addr_;
