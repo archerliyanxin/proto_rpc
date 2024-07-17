@@ -8,13 +8,16 @@ InetAddress::InetAddress(const std::string &ip , const uint16_t port){
     addr_.sin_port = htons(port);
     addr_.sin_addr.s_addr = inet_addr(ip.c_str());
 }
-uint16_t InetAddress::get_port() {
+uint16_t InetAddress::get_port() const{
     return ntohs(addr_.sin_port);
 }
-std::string InetAddress::get_ip() {
+std::string InetAddress::get_ip() const {
     char buf[buf_size] = "";
     inet_ntop(AF_INET,&addr_.sin_addr.s_addr,buf,sizeof buf);
     return buf;
+}
+const std::string InetAddress::to_ip_port() const{
+        return get_ip() +":"+ std::to_string(get_port());
 }
 std::string InetAddress::get_ip_port() {
     uint16_t port = get_port();

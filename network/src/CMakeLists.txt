@@ -7,7 +7,10 @@ set(net_SRCS
         SocketsOps.cpp
         InetAddress.cpp
         Socket.cpp Channel.cpp TcpServer.cpp EventLoop.cpp Poller.cpp defaultPoller.cpp EpollPoller.cpp utils.cpp EventLoopThread.cpp EventLoopThreadPool.cpp
-        Acceptor.cpp)
+        Acceptor.cpp
+        ../include/TcpServer.h
+        Buffer.cpp
+        TcpConncetion.cpp)
 add_library(network ${net_SRCS})
 target_link_libraries(network glog)
 target_include_directories(network PUBLIC ../include)

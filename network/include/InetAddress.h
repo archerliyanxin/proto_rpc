@@ -8,8 +8,9 @@ namespace network{
         explicit InetAddress(const std::string &ip = "127.0.0.1", const uint16_t port = 0);
         explicit InetAddress(const sockaddr_in &addr): addr_(addr){};
 
-        std::string get_ip();
-        uint16_t get_port();
+        std::string get_ip() const;
+        uint16_t get_port() const;
+        const std::string to_ip_port () const;
         std::string get_ip_port();
         void set_socketAddr(const sockaddr_in &addr){ addr_ = addr;}
         const sockaddr_in* get_socketAddr() const{return &addr_;};

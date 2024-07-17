@@ -5,9 +5,23 @@
 #include "InetAddress.h"
 #include "netinet/in.h"
 #include "iostream"
+
 namespace network{
     Socket::~Socket(){
         ::close(socket_fd);
+    }
+
+    void Socket::setReuseAddr(bool on){
+        int optVal =on ? 1:0;
+        ::setsockopt(socket_fd,SOL_SOCKET,SO_REUSEADDR,&optVal,static_cast<socklen_t>(sizeof optVal));
+    }
+
+    void Socket::setReusePort(bool on){
+        int optVal = on?1:0;
+        int ret = ::setsockopt(socket_fd,SOL_SOCKET,SO_REUSEPORT,&optVal,static_cast<socklen_t>(sizeof optVal));
+        if(ret < 0 && on){
+//            LOG(ERROR)<<"SO_REUSEPORT";
+        }
     }
 
     void Socket::listen(){
