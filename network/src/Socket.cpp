@@ -24,6 +24,11 @@ namespace network{
         }
     }
 
+    void Socket::keepAlive(bool on){
+        int opVal = on ? 1 : 0;
+        ::setsockopt(socket_fd,SOL_SOCKET,SO_KEEPALIVE,&opVal,static_cast<socklen_t>(sizeof opVal));
+    }
+
     void Socket::listen(){
         if(0 > ::listen(socket_fd, 1024)){}
     }
@@ -49,4 +54,5 @@ namespace network{
             std::cout<<" shutdown error"<<std::endl;
         }
     }
+
 }
