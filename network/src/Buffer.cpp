@@ -1,5 +1,6 @@
 #include "Buffer.h"
 #include "sys/uio.h"
+#include "iostream"
 namespace network{
     ssize_t Buffer::readFd(int fd, int *saveErrno){
         char extbuf[1024*64];
@@ -21,6 +22,15 @@ namespace network{
         } else{
             writerIndex_ = buffer_.size();
             append(extbuf, n - writeable);
+        }
+        return n;
+    }
+
+    ssize_t Buffer::wrieFd(int fd, int *saveErrno) {
+        int n = ::write(fd, peek(), readableBytes());
+        if(n < 0){
+            std::cout<<" wrieFd fail write"<<std::endl;
+            *saveErrno = n;
         }
         return n;
     }

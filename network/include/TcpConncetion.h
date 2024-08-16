@@ -31,20 +31,21 @@ namespace network{
         void setMessageCallBack(MessageCallBack &cb){ messageCallBack_ = cb;}
         void setWriteCompleteCallBack(WriteCompleteCallBack &cb){ writeCompleteCallBack_ = cb;}
         void setHightWaterMarkCallBack(HightWaterMarkCallBack &cb, size_t hightWaterSize){ hightWaterMarkCallBack_ = cb; highWaterSize_ = hightWaterSize;}
-        void setCloseCallBack(CloseCallBack &cb){ closeCallBack_ = cb;}
+        void setCloseCallBack(const CloseCallBack &cb){ closeCallBack_ = cb;}
 
-        void send(const void *message, size_t len);
+        void sendInLoop(const std::string &buf);
+        void send(const std::string &buf);
 
         void shutdown();
         void connectEstablish();
         void connectDestroyed();
     private:
+
         void handleRead();
         void handleWrite();
         void handleClose();
         void handleError();
 
-        void sendInLoop(const void *message, size_t len);
         void shutdownInLoop();
     private:
         enum StateE{kDisconnected, kDisconnecting, kConnected, kConnecting};
@@ -68,5 +69,7 @@ namespace network{
 
         Buffer inputBuffer_;
         Buffer outputBuffer_;
+    private:
+        void setState(StateE states){ state_ = states;}
     };
 }

@@ -7,5 +7,7 @@ namespace network{
 
     namespace sockets{
         int createNoBlockSocket(sa_family_t family);
+
+        sockaddr_in getLocalAddr(int sockfd);
     }
 }

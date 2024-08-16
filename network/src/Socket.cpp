@@ -37,7 +37,7 @@ namespace network{
         struct sockaddr_in addr;
         bzero(&addr,sizeof addr);
         socklen_t len = static_cast<socklen_t>(sizeof addr);
-        int con_fd = ::accept(socket_fd, reinterpret_cast<sockaddr *>(&addr), &len);
+        int con_fd = ::accept4(socket_fd, reinterpret_cast<sockaddr *>(&addr), &len, SOCK_NONBLOCK|SOCK_CLOEXEC);
         if(0 > con_fd ){}
         if(0 <= con_fd ){
             peerAddr->set_socketAddr(addr);

@@ -1,7 +1,7 @@
 #include "message.pb.h"
 #include <iostream>
 
-#include "rpc_framework/rpc_server.h"
+#include "rpc_framework/rpc_server1.h"
 namespace monitor {
     class TestServiceImpl : public TestService {
     public:
