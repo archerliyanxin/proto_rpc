@@ -85,7 +85,7 @@ namespace network{
     }
 
     void EventLoop::quit() {
-        loop_ = true;
+        quit_ = true;
 
         if(!is_in_loopThread()){
             wakeup();

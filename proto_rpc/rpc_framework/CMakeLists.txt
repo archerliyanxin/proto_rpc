@@ -1,8 +1,8 @@
 set(SOURCES
-        rpc_server1.cpp
         rpc.pb.cc
-        rpcServer.h
-        rpcServer.cpp)
+        rpcServer.cpp
+        rpcCodec.cpp
+        rpcChannel.cpp)
 add_library(rpc_server ${SOURCES})
 message("../..")
 target_include_directories(rpc_server PUBLIC
@@ -10,5 +10,5 @@ target_include_directories(rpc_server PUBLIC
         ${PROTOBUF_INCLUDE_DIRS} /
         ${PROJECT_SOURCE_DIR})
 
-target_link_libraries(rpc_server PUBLIC protobuf glog rpc_proto)
+target_link_libraries(rpc_server PUBLIC protobuf rpc_proto)
 install(TARGETS  rpc_server DESTINATION  ${PROJECT_BINARY_DIR}/lib)
