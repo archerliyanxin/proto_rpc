@@ -28,14 +28,15 @@ namespace network{
         bool connected() const {return kConnected == state_; }
 
         void setConnectionCallBack(ConnectionCallBack &cb){ connectionCallBack_ = cb;}
-        void setMessageCallBack(MessageCallBack &cb){ messageCallBack_ = cb;}
+        void setMessageCallBack(const MessageCallBack &cb){ messageCallBack_ = cb;}
         void setWriteCompleteCallBack(WriteCompleteCallBack &cb){ writeCompleteCallBack_ = cb;}
         void setHightWaterMarkCallBack(HightWaterMarkCallBack &cb, size_t hightWaterSize){ hightWaterMarkCallBack_ = cb; highWaterSize_ = hightWaterSize;}
         void setCloseCallBack(const CloseCallBack &cb){ closeCallBack_ = cb;}
 
+        void sendInLoop(const void *data, size_t len);
         void sendInLoop(const std::string &buf);
         void send(const std::string &buf);
-
+        void send(Buffer *buf);
         void shutdown();
         void connectEstablish();
         void connectDestroyed();

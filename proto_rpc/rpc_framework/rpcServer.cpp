@@ -1,6 +1,7 @@
 #include "rpcServer.h"
 #include <google/protobuf/descriptor.h>
 #include <google/protobuf/service.h>
+#include "rpcChannel.h"
 namespace network{
     rpcServer::rpcServer(EventLoop *loop, const InetAddress &listenAddr)
     : server_(loop, listenAddr, "RpcServer")
@@ -19,7 +20,9 @@ namespace network{
 
     void rpcServer::onConnection(const TcpConncetionPtr &conn){
         if(conn->connected()){
-
+            rpcChannelPtr channel(new rpc_channel(conn));
+            channel->setServices(&serviceMap_);
+            conn->setMessageCallBack(std::bind(&rpc_channel::onMessage, channel.get(), std::placeholders::_1, std::placeholders::_2));
         }else{
 
         }

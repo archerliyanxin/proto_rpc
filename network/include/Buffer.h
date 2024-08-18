@@ -4,6 +4,8 @@
 #include "string"
 #include "cassert"
 #include "algorithm"
+#include "utils.h"
+#include "cstring"
 namespace network{
 class Buffer{
 public:
@@ -48,9 +50,29 @@ public:
         return result;
     }
 
+    void prepend(const void * /*restrict*/ data, size_t len) {
+        readerIndex_ -= len;
+        const char *d = static_cast<const char *>(data);
+        std::copy(d, d + len, begin() + readerIndex_);
+    }
+
+    int32_t peekInt32() const {
+        int32_t be32 = 0;
+        ::memcpy(&be32, peek(), sizeof be32);
+        return socket::hostToNetwork32(be32);
+    }
+
+    void hasWritten(size_t len) {
+        writerIndex_ += len;
+    }
+
+    void appendInt32(int32_t x) {
+        int32_t be32 = socket::hostToNetwork32(x);
+        append(&be32, sizeof be32);
+    }
 
 // 缓冲区可读数据的起始地址
-    const char * peek(){
+    const char * peek() const{
         return begin() + readerIndex_;
     }
 
@@ -66,6 +88,9 @@ public:
         if(writeableBytes() < len){
             makeSpace(len);
         }
+    }
+    void append(const void * /*restrict*/ data, size_t len) {
+        append(static_cast<const char *>(data), len);
     }
 
     void append(const char* data, size_t len){

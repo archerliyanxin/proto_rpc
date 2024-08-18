@@ -88,12 +88,63 @@ namespace network{
         cur_thread::log_msg("TcpConncetion::handleError , name is %s, errno is %d\n", name_.c_str(), err);
     }
 
+    void TcpConncetion::send(Buffer *buf) {
+        if (state_ == kConnected) {
+            if (loop_->is_in_loopThread()) {
+                sendInLoop(buf->peek(), buf->readableBytes());
+                buf->retrieveAll();
+            } else {
+                std::function<void(const std::string &)> fp =
+                        [this](const std::string &str) { this->sendInLoop(str); };
+
+                loop_->runInLoop(std::bind(fp, buf->retrieveAllAsString()));
+            }
+        }
+    }
+
     void TcpConncetion::send(const std::string &buf){
         if(state_ == kConnected){
             if(loop_->is_in_loopThread()){
                 sendInLoop(buf);
             } else{
                 loop_->runInLoop(std::bind(&TcpConncetion::sendInLoop, this, buf));
+            }
+        }
+    }
+
+    void TcpConncetion::sendInLoop(const void *data, size_t len) {
+        ssize_t nwrote = 0;
+        size_t remaining = len;
+        bool faultError = false;
+        if (state_ == kDisconnected) {
+            return;
+        }
+        // if no thing in output queue, try writing directly
+        if (!channel_->isWriting() && outputBuffer_.readableBytes() == 0) {
+            nwrote = ::write(channel_->fd(), data, len);
+            if (nwrote >= 0) {
+                remaining = len - nwrote;
+                if (remaining == 0 && writeCompleteCallBack_) {
+                    loop_->queueInLoop(
+                            std::bind(writeCompleteCallBack_, shared_from_this()));
+                }
+            } else  // nwrote < 0
+            {
+                nwrote = 0;
+                if (errno != EWOULDBLOCK) {
+                    if (errno == EPIPE || errno == ECONNRESET)  // FIXME: any others?
+                    {
+                        faultError = true;
+                    }
+                }
+            }
+        }
+
+        if (!faultError && remaining > 0) {
+            size_t oldLen = outputBuffer_.readableBytes();
+            outputBuffer_.append(static_cast<const char *>(data) + nwrote, remaining);
+            if (!channel_->isWriting()) {
+                channel_->enableWriting();
             }
         }
     }

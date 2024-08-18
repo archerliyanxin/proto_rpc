@@ -31,6 +31,7 @@
 #include <google/protobuf/message.h>
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
+#include <google/protobuf/generated_enum_reflection.h>
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
@@ -54,35 +55,90 @@ struct TableStruct_rpc_2eproto {
   static const ::PROTOBUF_NAMESPACE_ID::uint32 offsets[];
 };
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_rpc_2eproto;
-namespace rpc {
-class rpcMeta;
-class rpcMetaDefaultTypeInternal;
-extern rpcMetaDefaultTypeInternal _rpcMeta_default_instance_;
-}  // namespace rpc
+namespace network {
+class RpcMessage;
+class RpcMessageDefaultTypeInternal;
+extern RpcMessageDefaultTypeInternal _RpcMessage_default_instance_;
+}  // namespace network
 PROTOBUF_NAMESPACE_OPEN
-template<> ::rpc::rpcMeta* Arena::CreateMaybeMessage<::rpc::rpcMeta>(Arena*);
+template<> ::network::RpcMessage* Arena::CreateMaybeMessage<::network::RpcMessage>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
-namespace rpc {
+namespace network {
 
+enum MessageType : int {
+  REQUEST = 0,
+  RESPONSE = 1,
+  MessageType_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  MessageType_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool MessageType_IsValid(int value);
+constexpr MessageType MessageType_MIN = REQUEST;
+constexpr MessageType MessageType_MAX = RESPONSE;
+constexpr int MessageType_ARRAYSIZE = MessageType_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MessageType_descriptor();
+template<typename T>
+inline const std::string& MessageType_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, MessageType>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function MessageType_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    MessageType_descriptor(), enum_t_value);
+}
+inline bool MessageType_Parse(
+    const std::string& name, MessageType* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<MessageType>(
+    MessageType_descriptor(), name, value);
+}
+enum ErrorCode : int {
+  NO_ERROR = 0,
+  WRONG_PROTO = 1,
+  NO_SERVICE = 2,
+  NO_METHOD = 3,
+  INVALID_REQUEST = 4,
+  INVALID_RESPONSE = 5,
+  TIMEOUT = 6,
+  ErrorCode_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  ErrorCode_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool ErrorCode_IsValid(int value);
+constexpr ErrorCode ErrorCode_MIN = NO_ERROR;
+constexpr ErrorCode ErrorCode_MAX = TIMEOUT;
+constexpr int ErrorCode_ARRAYSIZE = ErrorCode_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ErrorCode_descriptor();
+template<typename T>
+inline const std::string& ErrorCode_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, ErrorCode>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function ErrorCode_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    ErrorCode_descriptor(), enum_t_value);
+}
+inline bool ErrorCode_Parse(
+    const std::string& name, ErrorCode* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<ErrorCode>(
+    ErrorCode_descriptor(), name, value);
+}
 // ===================================================================
 
-class rpcMeta PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:rpc.rpcMeta) */ {
+class RpcMessage PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:network.RpcMessage) */ {
  public:
-  inline rpcMeta() : rpcMeta(nullptr) {};
-  virtual ~rpcMeta();
+  inline RpcMessage() : RpcMessage(nullptr) {};
+  virtual ~RpcMessage();
 
-  rpcMeta(const rpcMeta& from);
-  rpcMeta(rpcMeta&& from) noexcept
-    : rpcMeta() {
+  RpcMessage(const RpcMessage& from);
+  RpcMessage(RpcMessage&& from) noexcept
+    : RpcMessage() {
     *this = ::std::move(from);
   }
 
-  inline rpcMeta& operator=(const rpcMeta& from) {
+  inline RpcMessage& operator=(const RpcMessage& from) {
     CopyFrom(from);
     return *this;
   }
-  inline rpcMeta& operator=(rpcMeta&& from) noexcept {
+  inline RpcMessage& operator=(RpcMessage&& from) noexcept {
     if (GetArena() == from.GetArena()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -100,20 +156,20 @@ class rpcMeta PROTOBUF_FINAL :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const rpcMeta& default_instance();
+  static const RpcMessage& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const rpcMeta* internal_default_instance() {
-    return reinterpret_cast<const rpcMeta*>(
-               &_rpcMeta_default_instance_);
+  static inline const RpcMessage* internal_default_instance() {
+    return reinterpret_cast<const RpcMessage*>(
+               &_RpcMessage_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     0;
 
-  friend void swap(rpcMeta& a, rpcMeta& b) {
+  friend void swap(RpcMessage& a, RpcMessage& b) {
     a.Swap(&b);
   }
-  inline void Swap(rpcMeta* other) {
+  inline void Swap(RpcMessage* other) {
     if (other == this) return;
     if (GetArena() == other->GetArena()) {
       InternalSwap(other);
@@ -121,7 +177,7 @@ class rpcMeta PROTOBUF_FINAL :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(rpcMeta* other) {
+  void UnsafeArenaSwap(RpcMessage* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -129,17 +185,17 @@ class rpcMeta PROTOBUF_FINAL :
 
   // implements Message ----------------------------------------------
 
-  inline rpcMeta* New() const final {
-    return CreateMaybeMessage<rpcMeta>(nullptr);
+  inline RpcMessage* New() const final {
+    return CreateMaybeMessage<RpcMessage>(nullptr);
   }
 
-  rpcMeta* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<rpcMeta>(arena);
+  RpcMessage* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<RpcMessage>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const rpcMeta& from);
-  void MergeFrom(const rpcMeta& from);
+  void CopyFrom(const RpcMessage& from);
+  void MergeFrom(const RpcMessage& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -153,13 +209,13 @@ class rpcMeta PROTOBUF_FINAL :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(rpcMeta* other);
+  void InternalSwap(RpcMessage* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "rpc.rpcMeta";
+    return "network.RpcMessage";
   }
   protected:
-  explicit rpcMeta(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  explicit RpcMessage(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   private:
   static void ArenaDtor(void* object);
   inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
@@ -179,79 +235,155 @@ class rpcMeta PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kServiceNameFieldNumber = 1,
-    kMethodNameFieldNumber = 2,
-    kDataSizeFieldNumber = 3,
+    kServiceFieldNumber = 3,
+    kMethodFieldNumber = 4,
+    kRequestFieldNumber = 5,
+    kResponseFieldNumber = 6,
+    kIdFieldNumber = 2,
+    kTypeFieldNumber = 1,
+    kErrorFieldNumber = 7,
   };
-  // string service_name = 1;
-  void clear_service_name();
-  const std::string& service_name() const;
-  void set_service_name(const std::string& value);
-  void set_service_name(std::string&& value);
-  void set_service_name(const char* value);
-  void set_service_name(const char* value, size_t size);
-  std::string* mutable_service_name();
-  std::string* release_service_name();
-  void set_allocated_service_name(std::string* service_name);
+  // string service = 3;
+  void clear_service();
+  const std::string& service() const;
+  void set_service(const std::string& value);
+  void set_service(std::string&& value);
+  void set_service(const char* value);
+  void set_service(const char* value, size_t size);
+  std::string* mutable_service();
+  std::string* release_service();
+  void set_allocated_service(std::string* service);
   GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
   "    string fields are deprecated and will be removed in a"
   "    future release.")
-  std::string* unsafe_arena_release_service_name();
+  std::string* unsafe_arena_release_service();
   GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
   "    string fields are deprecated and will be removed in a"
   "    future release.")
-  void unsafe_arena_set_allocated_service_name(
-      std::string* service_name);
+  void unsafe_arena_set_allocated_service(
+      std::string* service);
   private:
-  const std::string& _internal_service_name() const;
-  void _internal_set_service_name(const std::string& value);
-  std::string* _internal_mutable_service_name();
+  const std::string& _internal_service() const;
+  void _internal_set_service(const std::string& value);
+  std::string* _internal_mutable_service();
   public:
 
-  // string method_name = 2;
-  void clear_method_name();
-  const std::string& method_name() const;
-  void set_method_name(const std::string& value);
-  void set_method_name(std::string&& value);
-  void set_method_name(const char* value);
-  void set_method_name(const char* value, size_t size);
-  std::string* mutable_method_name();
-  std::string* release_method_name();
-  void set_allocated_method_name(std::string* method_name);
+  // string method = 4;
+  void clear_method();
+  const std::string& method() const;
+  void set_method(const std::string& value);
+  void set_method(std::string&& value);
+  void set_method(const char* value);
+  void set_method(const char* value, size_t size);
+  std::string* mutable_method();
+  std::string* release_method();
+  void set_allocated_method(std::string* method);
   GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
   "    string fields are deprecated and will be removed in a"
   "    future release.")
-  std::string* unsafe_arena_release_method_name();
+  std::string* unsafe_arena_release_method();
   GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
   "    string fields are deprecated and will be removed in a"
   "    future release.")
-  void unsafe_arena_set_allocated_method_name(
-      std::string* method_name);
+  void unsafe_arena_set_allocated_method(
+      std::string* method);
   private:
-  const std::string& _internal_method_name() const;
-  void _internal_set_method_name(const std::string& value);
-  std::string* _internal_mutable_method_name();
+  const std::string& _internal_method() const;
+  void _internal_set_method(const std::string& value);
+  std::string* _internal_mutable_method();
   public:
 
-  // int64 data_size = 3;
-  void clear_data_size();
-  ::PROTOBUF_NAMESPACE_ID::int64 data_size() const;
-  void set_data_size(::PROTOBUF_NAMESPACE_ID::int64 value);
+  // bytes request = 5;
+  void clear_request();
+  const std::string& request() const;
+  void set_request(const std::string& value);
+  void set_request(std::string&& value);
+  void set_request(const char* value);
+  void set_request(const void* value, size_t size);
+  std::string* mutable_request();
+  std::string* release_request();
+  void set_allocated_request(std::string* request);
+  GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
+  "    string fields are deprecated and will be removed in a"
+  "    future release.")
+  std::string* unsafe_arena_release_request();
+  GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
+  "    string fields are deprecated and will be removed in a"
+  "    future release.")
+  void unsafe_arena_set_allocated_request(
+      std::string* request);
   private:
-  ::PROTOBUF_NAMESPACE_ID::int64 _internal_data_size() const;
-  void _internal_set_data_size(::PROTOBUF_NAMESPACE_ID::int64 value);
+  const std::string& _internal_request() const;
+  void _internal_set_request(const std::string& value);
+  std::string* _internal_mutable_request();
   public:
 
-  // @@protoc_insertion_point(class_scope:rpc.rpcMeta)
+  // bytes response = 6;
+  void clear_response();
+  const std::string& response() const;
+  void set_response(const std::string& value);
+  void set_response(std::string&& value);
+  void set_response(const char* value);
+  void set_response(const void* value, size_t size);
+  std::string* mutable_response();
+  std::string* release_response();
+  void set_allocated_response(std::string* response);
+  GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
+  "    string fields are deprecated and will be removed in a"
+  "    future release.")
+  std::string* unsafe_arena_release_response();
+  GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
+  "    string fields are deprecated and will be removed in a"
+  "    future release.")
+  void unsafe_arena_set_allocated_response(
+      std::string* response);
+  private:
+  const std::string& _internal_response() const;
+  void _internal_set_response(const std::string& value);
+  std::string* _internal_mutable_response();
+  public:
+
+  // int64 id = 2;
+  void clear_id();
+  ::PROTOBUF_NAMESPACE_ID::int64 id() const;
+  void set_id(::PROTOBUF_NAMESPACE_ID::int64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int64 _internal_id() const;
+  void _internal_set_id(::PROTOBUF_NAMESPACE_ID::int64 value);
+  public:
+
+  // .network.MessageType type = 1;
+  void clear_type();
+  ::network::MessageType type() const;
+  void set_type(::network::MessageType value);
+  private:
+  ::network::MessageType _internal_type() const;
+  void _internal_set_type(::network::MessageType value);
+  public:
+
+  // .network.ErrorCode error = 7;
+  void clear_error();
+  ::network::ErrorCode error() const;
+  void set_error(::network::ErrorCode value);
+  private:
+  ::network::ErrorCode _internal_error() const;
+  void _internal_set_error(::network::ErrorCode value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:network.RpcMessage)
  private:
   class _Internal;
 
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr service_name_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr method_name_;
-  ::PROTOBUF_NAMESPACE_ID::int64 data_size_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr service_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr method_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr request_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr response_;
+  ::PROTOBUF_NAMESPACE_ID::int64 id_;
+  int type_;
+  int error_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_rpc_2eproto;
 };
@@ -264,188 +396,390 @@ class rpcMeta PROTOBUF_FINAL :
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
-// rpcMeta
+// RpcMessage
 
-// string service_name = 1;
-inline void rpcMeta::clear_service_name() {
-  service_name_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+// .network.MessageType type = 1;
+inline void RpcMessage::clear_type() {
+  type_ = 0;
 }
-inline const std::string& rpcMeta::service_name() const {
-  // @@protoc_insertion_point(field_get:rpc.rpcMeta.service_name)
-  return _internal_service_name();
+inline ::network::MessageType RpcMessage::_internal_type() const {
+  return static_cast< ::network::MessageType >(type_);
 }
-inline void rpcMeta::set_service_name(const std::string& value) {
-  _internal_set_service_name(value);
-  // @@protoc_insertion_point(field_set:rpc.rpcMeta.service_name)
+inline ::network::MessageType RpcMessage::type() const {
+  // @@protoc_insertion_point(field_get:network.RpcMessage.type)
+  return _internal_type();
 }
-inline std::string* rpcMeta::mutable_service_name() {
-  // @@protoc_insertion_point(field_mutable:rpc.rpcMeta.service_name)
-  return _internal_mutable_service_name();
-}
-inline const std::string& rpcMeta::_internal_service_name() const {
-  return service_name_.Get();
-}
-inline void rpcMeta::_internal_set_service_name(const std::string& value) {
+inline void RpcMessage::_internal_set_type(::network::MessageType value) {
   
-  service_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+  type_ = value;
 }
-inline void rpcMeta::set_service_name(std::string&& value) {
+inline void RpcMessage::set_type(::network::MessageType value) {
+  _internal_set_type(value);
+  // @@protoc_insertion_point(field_set:network.RpcMessage.type)
+}
+
+// int64 id = 2;
+inline void RpcMessage::clear_id() {
+  id_ = PROTOBUF_LONGLONG(0);
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 RpcMessage::_internal_id() const {
+  return id_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 RpcMessage::id() const {
+  // @@protoc_insertion_point(field_get:network.RpcMessage.id)
+  return _internal_id();
+}
+inline void RpcMessage::_internal_set_id(::PROTOBUF_NAMESPACE_ID::int64 value) {
   
-  service_name_.Set(
+  id_ = value;
+}
+inline void RpcMessage::set_id(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _internal_set_id(value);
+  // @@protoc_insertion_point(field_set:network.RpcMessage.id)
+}
+
+// string service = 3;
+inline void RpcMessage::clear_service() {
+  service_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline const std::string& RpcMessage::service() const {
+  // @@protoc_insertion_point(field_get:network.RpcMessage.service)
+  return _internal_service();
+}
+inline void RpcMessage::set_service(const std::string& value) {
+  _internal_set_service(value);
+  // @@protoc_insertion_point(field_set:network.RpcMessage.service)
+}
+inline std::string* RpcMessage::mutable_service() {
+  // @@protoc_insertion_point(field_mutable:network.RpcMessage.service)
+  return _internal_mutable_service();
+}
+inline const std::string& RpcMessage::_internal_service() const {
+  return service_.Get();
+}
+inline void RpcMessage::_internal_set_service(const std::string& value) {
+  
+  service_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void RpcMessage::set_service(std::string&& value) {
+  
+  service_.Set(
     &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
-  // @@protoc_insertion_point(field_set_rvalue:rpc.rpcMeta.service_name)
+  // @@protoc_insertion_point(field_set_rvalue:network.RpcMessage.service)
 }
-inline void rpcMeta::set_service_name(const char* value) {
+inline void RpcMessage::set_service(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
   
-  service_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+  service_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
               GetArena());
-  // @@protoc_insertion_point(field_set_char:rpc.rpcMeta.service_name)
+  // @@protoc_insertion_point(field_set_char:network.RpcMessage.service)
 }
-inline void rpcMeta::set_service_name(const char* value,
+inline void RpcMessage::set_service(const char* value,
     size_t size) {
   
-  service_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+  service_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
       reinterpret_cast<const char*>(value), size), GetArena());
-  // @@protoc_insertion_point(field_set_pointer:rpc.rpcMeta.service_name)
+  // @@protoc_insertion_point(field_set_pointer:network.RpcMessage.service)
 }
-inline std::string* rpcMeta::_internal_mutable_service_name() {
+inline std::string* RpcMessage::_internal_mutable_service() {
   
-  return service_name_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  return service_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
-inline std::string* rpcMeta::release_service_name() {
-  // @@protoc_insertion_point(field_release:rpc.rpcMeta.service_name)
-  return service_name_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+inline std::string* RpcMessage::release_service() {
+  // @@protoc_insertion_point(field_release:network.RpcMessage.service)
+  return service_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
-inline void rpcMeta::set_allocated_service_name(std::string* service_name) {
-  if (service_name != nullptr) {
+inline void RpcMessage::set_allocated_service(std::string* service) {
+  if (service != nullptr) {
     
   } else {
     
   }
-  service_name_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), service_name,
+  service_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), service,
       GetArena());
-  // @@protoc_insertion_point(field_set_allocated:rpc.rpcMeta.service_name)
+  // @@protoc_insertion_point(field_set_allocated:network.RpcMessage.service)
 }
-inline std::string* rpcMeta::unsafe_arena_release_service_name() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:rpc.rpcMeta.service_name)
+inline std::string* RpcMessage::unsafe_arena_release_service() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:network.RpcMessage.service)
   GOOGLE_DCHECK(GetArena() != nullptr);
   
-  return service_name_.UnsafeArenaRelease(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+  return service_.UnsafeArenaRelease(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       GetArena());
 }
-inline void rpcMeta::unsafe_arena_set_allocated_service_name(
-    std::string* service_name) {
+inline void RpcMessage::unsafe_arena_set_allocated_service(
+    std::string* service) {
   GOOGLE_DCHECK(GetArena() != nullptr);
-  if (service_name != nullptr) {
+  if (service != nullptr) {
     
   } else {
     
   }
-  service_name_.UnsafeArenaSetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      service_name, GetArena());
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:rpc.rpcMeta.service_name)
+  service_.UnsafeArenaSetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      service, GetArena());
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:network.RpcMessage.service)
 }
 
-// string method_name = 2;
-inline void rpcMeta::clear_method_name() {
-  method_name_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+// string method = 4;
+inline void RpcMessage::clear_method() {
+  method_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
-inline const std::string& rpcMeta::method_name() const {
-  // @@protoc_insertion_point(field_get:rpc.rpcMeta.method_name)
-  return _internal_method_name();
+inline const std::string& RpcMessage::method() const {
+  // @@protoc_insertion_point(field_get:network.RpcMessage.method)
+  return _internal_method();
 }
-inline void rpcMeta::set_method_name(const std::string& value) {
-  _internal_set_method_name(value);
-  // @@protoc_insertion_point(field_set:rpc.rpcMeta.method_name)
+inline void RpcMessage::set_method(const std::string& value) {
+  _internal_set_method(value);
+  // @@protoc_insertion_point(field_set:network.RpcMessage.method)
 }
-inline std::string* rpcMeta::mutable_method_name() {
-  // @@protoc_insertion_point(field_mutable:rpc.rpcMeta.method_name)
-  return _internal_mutable_method_name();
+inline std::string* RpcMessage::mutable_method() {
+  // @@protoc_insertion_point(field_mutable:network.RpcMessage.method)
+  return _internal_mutable_method();
 }
-inline const std::string& rpcMeta::_internal_method_name() const {
-  return method_name_.Get();
+inline const std::string& RpcMessage::_internal_method() const {
+  return method_.Get();
 }
-inline void rpcMeta::_internal_set_method_name(const std::string& value) {
+inline void RpcMessage::_internal_set_method(const std::string& value) {
   
-  method_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+  method_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
 }
-inline void rpcMeta::set_method_name(std::string&& value) {
+inline void RpcMessage::set_method(std::string&& value) {
   
-  method_name_.Set(
+  method_.Set(
     &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
-  // @@protoc_insertion_point(field_set_rvalue:rpc.rpcMeta.method_name)
+  // @@protoc_insertion_point(field_set_rvalue:network.RpcMessage.method)
 }
-inline void rpcMeta::set_method_name(const char* value) {
+inline void RpcMessage::set_method(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
   
-  method_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+  method_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
               GetArena());
-  // @@protoc_insertion_point(field_set_char:rpc.rpcMeta.method_name)
+  // @@protoc_insertion_point(field_set_char:network.RpcMessage.method)
 }
-inline void rpcMeta::set_method_name(const char* value,
+inline void RpcMessage::set_method(const char* value,
     size_t size) {
   
-  method_name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+  method_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
       reinterpret_cast<const char*>(value), size), GetArena());
-  // @@protoc_insertion_point(field_set_pointer:rpc.rpcMeta.method_name)
+  // @@protoc_insertion_point(field_set_pointer:network.RpcMessage.method)
 }
-inline std::string* rpcMeta::_internal_mutable_method_name() {
+inline std::string* RpcMessage::_internal_mutable_method() {
   
-  return method_name_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  return method_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
-inline std::string* rpcMeta::release_method_name() {
-  // @@protoc_insertion_point(field_release:rpc.rpcMeta.method_name)
-  return method_name_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+inline std::string* RpcMessage::release_method() {
+  // @@protoc_insertion_point(field_release:network.RpcMessage.method)
+  return method_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
-inline void rpcMeta::set_allocated_method_name(std::string* method_name) {
-  if (method_name != nullptr) {
+inline void RpcMessage::set_allocated_method(std::string* method) {
+  if (method != nullptr) {
     
   } else {
     
   }
-  method_name_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), method_name,
+  method_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), method,
       GetArena());
-  // @@protoc_insertion_point(field_set_allocated:rpc.rpcMeta.method_name)
+  // @@protoc_insertion_point(field_set_allocated:network.RpcMessage.method)
 }
-inline std::string* rpcMeta::unsafe_arena_release_method_name() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:rpc.rpcMeta.method_name)
+inline std::string* RpcMessage::unsafe_arena_release_method() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:network.RpcMessage.method)
   GOOGLE_DCHECK(GetArena() != nullptr);
   
-  return method_name_.UnsafeArenaRelease(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+  return method_.UnsafeArenaRelease(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       GetArena());
 }
-inline void rpcMeta::unsafe_arena_set_allocated_method_name(
-    std::string* method_name) {
+inline void RpcMessage::unsafe_arena_set_allocated_method(
+    std::string* method) {
   GOOGLE_DCHECK(GetArena() != nullptr);
-  if (method_name != nullptr) {
+  if (method != nullptr) {
     
   } else {
     
   }
-  method_name_.UnsafeArenaSetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      method_name, GetArena());
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:rpc.rpcMeta.method_name)
+  method_.UnsafeArenaSetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      method, GetArena());
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:network.RpcMessage.method)
 }
 
-// int64 data_size = 3;
-inline void rpcMeta::clear_data_size() {
-  data_size_ = PROTOBUF_LONGLONG(0);
+// bytes request = 5;
+inline void RpcMessage::clear_request() {
+  request_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 rpcMeta::_internal_data_size() const {
-  return data_size_;
+inline const std::string& RpcMessage::request() const {
+  // @@protoc_insertion_point(field_get:network.RpcMessage.request)
+  return _internal_request();
 }
-inline ::PROTOBUF_NAMESPACE_ID::int64 rpcMeta::data_size() const {
-  // @@protoc_insertion_point(field_get:rpc.rpcMeta.data_size)
-  return _internal_data_size();
+inline void RpcMessage::set_request(const std::string& value) {
+  _internal_set_request(value);
+  // @@protoc_insertion_point(field_set:network.RpcMessage.request)
 }
-inline void rpcMeta::_internal_set_data_size(::PROTOBUF_NAMESPACE_ID::int64 value) {
+inline std::string* RpcMessage::mutable_request() {
+  // @@protoc_insertion_point(field_mutable:network.RpcMessage.request)
+  return _internal_mutable_request();
+}
+inline const std::string& RpcMessage::_internal_request() const {
+  return request_.Get();
+}
+inline void RpcMessage::_internal_set_request(const std::string& value) {
   
-  data_size_ = value;
+  request_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
 }
-inline void rpcMeta::set_data_size(::PROTOBUF_NAMESPACE_ID::int64 value) {
-  _internal_set_data_size(value);
-  // @@protoc_insertion_point(field_set:rpc.rpcMeta.data_size)
+inline void RpcMessage::set_request(std::string&& value) {
+  
+  request_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:network.RpcMessage.request)
+}
+inline void RpcMessage::set_request(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  request_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:network.RpcMessage.request)
+}
+inline void RpcMessage::set_request(const void* value,
+    size_t size) {
+  
+  request_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:network.RpcMessage.request)
+}
+inline std::string* RpcMessage::_internal_mutable_request() {
+  
+  return request_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* RpcMessage::release_request() {
+  // @@protoc_insertion_point(field_release:network.RpcMessage.request)
+  return request_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void RpcMessage::set_allocated_request(std::string* request) {
+  if (request != nullptr) {
+    
+  } else {
+    
+  }
+  request_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), request,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:network.RpcMessage.request)
+}
+inline std::string* RpcMessage::unsafe_arena_release_request() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:network.RpcMessage.request)
+  GOOGLE_DCHECK(GetArena() != nullptr);
+  
+  return request_.UnsafeArenaRelease(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      GetArena());
+}
+inline void RpcMessage::unsafe_arena_set_allocated_request(
+    std::string* request) {
+  GOOGLE_DCHECK(GetArena() != nullptr);
+  if (request != nullptr) {
+    
+  } else {
+    
+  }
+  request_.UnsafeArenaSetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      request, GetArena());
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:network.RpcMessage.request)
+}
+
+// bytes response = 6;
+inline void RpcMessage::clear_response() {
+  response_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline const std::string& RpcMessage::response() const {
+  // @@protoc_insertion_point(field_get:network.RpcMessage.response)
+  return _internal_response();
+}
+inline void RpcMessage::set_response(const std::string& value) {
+  _internal_set_response(value);
+  // @@protoc_insertion_point(field_set:network.RpcMessage.response)
+}
+inline std::string* RpcMessage::mutable_response() {
+  // @@protoc_insertion_point(field_mutable:network.RpcMessage.response)
+  return _internal_mutable_response();
+}
+inline const std::string& RpcMessage::_internal_response() const {
+  return response_.Get();
+}
+inline void RpcMessage::_internal_set_response(const std::string& value) {
+  
+  response_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void RpcMessage::set_response(std::string&& value) {
+  
+  response_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:network.RpcMessage.response)
+}
+inline void RpcMessage::set_response(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  response_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:network.RpcMessage.response)
+}
+inline void RpcMessage::set_response(const void* value,
+    size_t size) {
+  
+  response_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:network.RpcMessage.response)
+}
+inline std::string* RpcMessage::_internal_mutable_response() {
+  
+  return response_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* RpcMessage::release_response() {
+  // @@protoc_insertion_point(field_release:network.RpcMessage.response)
+  return response_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void RpcMessage::set_allocated_response(std::string* response) {
+  if (response != nullptr) {
+    
+  } else {
+    
+  }
+  response_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), response,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:network.RpcMessage.response)
+}
+inline std::string* RpcMessage::unsafe_arena_release_response() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:network.RpcMessage.response)
+  GOOGLE_DCHECK(GetArena() != nullptr);
+  
+  return response_.UnsafeArenaRelease(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      GetArena());
+}
+inline void RpcMessage::unsafe_arena_set_allocated_response(
+    std::string* response) {
+  GOOGLE_DCHECK(GetArena() != nullptr);
+  if (response != nullptr) {
+    
+  } else {
+    
+  }
+  response_.UnsafeArenaSetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      response, GetArena());
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:network.RpcMessage.response)
+}
+
+// .network.ErrorCode error = 7;
+inline void RpcMessage::clear_error() {
+  error_ = 0;
+}
+inline ::network::ErrorCode RpcMessage::_internal_error() const {
+  return static_cast< ::network::ErrorCode >(error_);
+}
+inline ::network::ErrorCode RpcMessage::error() const {
+  // @@protoc_insertion_point(field_get:network.RpcMessage.error)
+  return _internal_error();
+}
+inline void RpcMessage::_internal_set_error(::network::ErrorCode value) {
+  
+  error_ = value;
+}
+inline void RpcMessage::set_error(::network::ErrorCode value) {
+  _internal_set_error(value);
+  // @@protoc_insertion_point(field_set:network.RpcMessage.error)
 }
 
 #ifdef __GNUC__
@@ -454,7 +788,22 @@ inline void rpcMeta::set_data_size(::PROTOBUF_NAMESPACE_ID::int64 value) {
 
 // @@protoc_insertion_point(namespace_scope)
 
-}  // namespace rpc
+}  // namespace network
+
+PROTOBUF_NAMESPACE_OPEN
+
+template <> struct is_proto_enum< ::network::MessageType> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::network::MessageType>() {
+  return ::network::MessageType_descriptor();
+}
+template <> struct is_proto_enum< ::network::ErrorCode> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::network::ErrorCode>() {
+  return ::network::ErrorCode_descriptor();
+}
+
+PROTOBUF_NAMESPACE_CLOSE
 
 // @@protoc_insertion_point(global_scope)
 
