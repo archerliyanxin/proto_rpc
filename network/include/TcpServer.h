@@ -11,6 +11,7 @@
 #include "EventLoop.h"
 #include "SocketsOps.h"
 namespace network{
+
     class Acceptor;
     class EventLoop;
     class EventLoopThreadPool;
@@ -34,6 +35,8 @@ namespace network{
 
         void set_thread_num(int thread_num);
         void start();
+
+
     private:
         void new_connection(int socket_fd, const InetAddress &perAddr);
         void remove_connection(const TcpConncetionPtr &conn);

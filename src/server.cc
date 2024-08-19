@@ -1,7 +1,9 @@
+
 #include "message.pb.h"
 #include <iostream>
 
-#include "rpc_framework/rpc_server1.h"
+#include "network/include/TcpServer.h"
+#include "rpc_framework/rpcServer.h"
 namespace monitor {
     class TestServiceImpl : public TestService {
     public:
@@ -20,11 +22,20 @@ namespace monitor {
     };
 
 }  // namespace monitor
+using namespace network;
 int main(int argc, char *argv[]) {
-    monitor::TestServiceImpl testService;
-    rpc_framework::Rpc_server rpcServer;
-    rpcServer.RegisterService(&testService);
-    rpcServer.start("127.0.0.1", 8896);
-    ::google::protobuf::ShutdownProtobufLibrary();
+//    monitor::TestServiceImpl testService;
+//    rpc_framework::Rpc_server rpcServer;
+//    rpcServer.RegisterService(&testService);
+//    rpcServer.start("127.0.0.1", 8896);
+//    ::google::protobuf::ShutdownProtobufLibrary();
+    EventLoop loop;
+    InetAddress listenAddr(9981);
+    monitor::TestServiceImpl impl;
+    rpcServer server(&loop, listenAddr);
+    server.RegisterService(&impl);
+    server.start();
+    loop.loop();
+    google::protobuf::ShutdownProtobufLibrary();
     return 0;
 }

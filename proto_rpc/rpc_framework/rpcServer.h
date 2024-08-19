@@ -13,7 +13,7 @@ namespace network{
         void setThreadNum(int numThreads){server_.set_thread_num(numThreads);}
 
         void RegisterService(::google::protobuf::Service *service);
-        void start(const std::string &ip, const int port);
+        void start();
     private:
         void onConnection(const TcpConncetionPtr &conn);
         TcpServer server_;

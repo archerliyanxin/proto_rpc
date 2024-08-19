@@ -40,6 +40,9 @@ namespace network{
         void shutdown();
         void connectEstablish();
         void connectDestroyed();
+        void forceClose();
+        void forceCloseInLoop();
+
     private:
 
         void handleRead();
@@ -53,7 +56,7 @@ namespace network{
         EventLoop *loop_;
         const std::string name_;
 
-        std::atomic_int state_;
+        StateE state_;
         bool reading_;
         // acceptor --> mainLoop | tcpConnection --> subLoop
         std::unique_ptr<Socket> socket_;

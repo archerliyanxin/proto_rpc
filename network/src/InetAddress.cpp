@@ -2,7 +2,7 @@
 #include "arpa/inet.h"
 const uint8_t buf_size = 64;
 using namespace network;
-InetAddress::InetAddress(const std::string &ip , const uint16_t port){
+InetAddress::InetAddress( const uint16_t port, const std::string &ip){
     memset(&addr_,0 ,sizeof addr_);
     addr_.sin_family = AF_INET; //ipv4
     addr_.sin_port = htons(port);

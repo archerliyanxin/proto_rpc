@@ -12,4 +12,6 @@ using HightWaterMarkCallBack = std::function<void (const TcpConncetionPtr&, size
 
 using MessageCallBack = std::function<void (const TcpConncetionPtr &, Buffer *)>;
 
+void defaultConnectionCallback(const TcpConncetionPtr &conn);
+void defaultMessageCallback(const TcpConncetionPtr &conn, Buffer *buffer);
 }

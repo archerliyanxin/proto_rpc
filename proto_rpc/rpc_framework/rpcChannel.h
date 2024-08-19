@@ -25,7 +25,7 @@ public:
     ~rpc_channel() override;
     void setConnection(const TcpConncetionPtr &conn){conn_ = conn;};
     void setServices(const std::map<std::string ,::google::protobuf::Service *> *services){ services_ = services;}
-    virtual virtual void CallMethod(const google::protobuf::MethodDescriptor* method,
+    virtual void CallMethod(const google::protobuf::MethodDescriptor* method,
                                     google::protobuf::RpcController* controller, const google::protobuf::Message* request,
                                     google::protobuf::Message* response, google::protobuf::Closure* done) override;
     void onMessage(const TcpConncetionPtr &ptr, Buffer *buf);

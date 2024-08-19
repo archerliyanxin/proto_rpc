@@ -23,7 +23,7 @@ namespace network{
     EventLoop::EventLoop()
     : loop_(false)
     , quit_(false)
-    , thread_id(cur_thread::get_thread_id())
+    , thread_id(get_thread_id())
     , poller_(Poller::new_DefaultChannel(this))
     , wakeup_fd(createEventFd())
     , wakeup_channel_(new Channel(this,wakeup_fd))
@@ -44,7 +44,7 @@ namespace network{
         uint64_t notify = 0;
         ssize_t n = ::read(wakeup_fd, static_cast<void*>(&notify), sizeof notify);
         if( (sizeof notify) != n){
-            cur_thread::log_msg("handle_read read error %s ,read %d\n", __FUNCTION__, n );
+            log_msg("handle_read read error %s ,read %d\n", __FUNCTION__, n );
         }
     }
 
@@ -96,7 +96,7 @@ namespace network{
         uint64_t one = 1;
         ssize_t n = write(wakeup_fd,&one,sizeof one);
         if(sizeof one == n){
-            cur_thread::log_msg("%s error , write wakeup_fd is %d, error code is",__FUNCTION__ ,n, errno);
+            network::log_msg("%s error , write wakeup_fd is %d, error code is",__FUNCTION__ ,n, errno);
         }
     }
 

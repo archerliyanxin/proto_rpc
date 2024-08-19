@@ -14,7 +14,7 @@ namespace network{
         serviceMap_[desc->full_name()] = service;
     }
 
-    void rpcServer::start(const std::string &ip, const int port){
+    void rpcServer::start(){
         server_.start();
     }
 
@@ -23,6 +23,7 @@ namespace network{
             rpcChannelPtr channel(new rpc_channel(conn));
             channel->setServices(&serviceMap_);
             conn->setMessageCallBack(std::bind(&rpc_channel::onMessage, channel.get(), std::placeholders::_1, std::placeholders::_2));
+            log_msg("client connect");
         }else{
 
         }

@@ -4,10 +4,17 @@
 #include "atomic"
 #include "vector"
 #include "utils.h"
+
 #include "mutex"
 namespace network{
     class Channel;
     class Poller;
+//    EventLoop* CHECK_NOT_NULL(EventLoop *loop){
+//        if(nullptr == loop){
+//            ::exit(-1);
+//        }
+//        return loop;
+//    }
     class EventLoop{
     public:
         using Functor = std::function<void()>;
@@ -20,7 +27,7 @@ namespace network{
         void loop();
         void quit();
         void doPendingFunctor();
-        bool is_in_loopThread() const{return thread_id == cur_thread::get_thread_id();};
+        bool is_in_loopThread() const{return thread_id == get_thread_id();};
         //唤醒loop所在的线程
         void wakeup();
         void runInLoop(Functor cb);

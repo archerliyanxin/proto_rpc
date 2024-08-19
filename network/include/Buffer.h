@@ -44,6 +44,10 @@ public:
         readerIndex_ = writerIndex_ = kCheapPrepend;
     }
 
+    std::string retrieveAllAsString() {
+        return retrieveAsString(readableBytes());
+    }
+
     std::string retrieveAsString(size_t len){
         std::string result(peek(), len);
         retrieve(len);

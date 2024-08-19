@@ -17,12 +17,14 @@ install(TARGETS monitor_proto
 #message(${PROJECT_BINARY_DIR})
 add_executable(proto_server server.cc)
 #target_compile_definitions(proto_server PUBLIC HAVE_LIB_GFLAGS HAVE_GLOG)
-target_link_libraries(proto_server monitor_proto rpc_server)
+target_link_libraries(proto_server monitor_proto rpc_framework network)
 target_include_directories(proto_server PUBLIC
         ${PROJECT_SOURCE_DIR}/proto_rpc
         )
 add_executable(proto_client client.cpp)
 target_link_libraries(proto_client PUBLIC
-        monitor_proto rpc_server)
+        monitor_proto rpc_framework network)
 target_include_directories(proto_client PUBLIC
         ${PROJECT_SOURCE_DIR}/proto_rpc)
+install(TARGETS proto_server proto_client
+        DESTINATION ${PROJECT_BINARY_DIR}/bin)

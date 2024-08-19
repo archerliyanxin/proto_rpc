@@ -1,13 +1,8 @@
 #include "TcpServer.h"
 namespace network{
-    EventLoop* CHECK_NOT_NULL(EventLoop *loop){
-        if(nullptr == loop){
-            ::exit(-1);
-        }
-        return loop;
-    }
+
     TcpServer::TcpServer(network::EventLoop *loop, const network::InetAddress &listenAddr, const std::string &name, network::TcpServer::Option option)
-        :loop_(CHECK_NOT_NULL(loop))
+        :loop_(loop)
           , ip_port_(listenAddr.to_ip_port())
           , acceptor_(new Acceptor(loop, listenAddr, option == kNoReusePort))
           , threadPool_(new EventLoopThreadPool(loop, name_))

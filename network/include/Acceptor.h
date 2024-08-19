@@ -1,3 +1,4 @@
+#pragma once
 #include "functional"
 #include "Socket.h"
 #include "Channel.h"

@@ -3,6 +3,16 @@
 #include "Socket.h"
 #include "Channel.h"
 namespace network{
+    void defaultConnectionCallback(const TcpConncetionPtr &conn) {
+
+        // do not call conn->forceClose(), because some users want to register message
+        // callback only.
+    }
+
+    void defaultMessageCallback(const TcpConncetionPtr &, Buffer *buf) {
+        buf->retrieveAll();
+    }
+
     static EventLoop *CheckNULL(EventLoop *loop){
         if(nullptr == loop){
             exit(-1);
@@ -10,13 +20,31 @@ namespace network{
         return loop;
     }
 
+    void TcpConncetion::forceCloseInLoop() {
+        if (state_ == kConnected || state_ == kDisconnecting) {
+            // as if we received 0 byte in handleRead();
+            handleClose();
+        }
+    }
+
+    void TcpConncetion::forceClose() {
+        // FIXME: use compare and swap
+        if (state_ == kConnected || state_ == kDisconnecting) {
+            setState(kDisconnecting);
+            loop_->queueInLoop(
+                    std::bind(&TcpConncetion::forceCloseInLoop, shared_from_this()));
+        }
+    }
+    TcpConncetion::~TcpConncetion(){
+
+    }
     TcpConncetion::TcpConncetion(EventLoop *loop, const std::string &name,
                   int sockfd,
                   const InetAddress &localAddr,
                   const InetAddress &perAddr)
     : loop_(CheckNULL(loop))
     , name_(name)
-    , state_(kConnected)
+    , state_(kConnecting)
     , reading_(false)
     , socket_(new Socket(sockfd))
     , channel_(new Channel(loop, sockfd))
@@ -62,7 +90,7 @@ namespace network{
                     }
                 }
             } else{
-                cur_thread::log_msg("handleWrite error");
+                network::log_msg("handleWrite error");
             }
         }
     }
@@ -85,7 +113,7 @@ namespace network{
         }else{
             err = optVal;
         }
-        cur_thread::log_msg("TcpConncetion::handleError , name is %s, errno is %d\n", name_.c_str(), err);
+        network::log_msg("TcpConncetion::handleError , name is %s, errno is %d\n", name_.c_str(), err);
     }
 
     void TcpConncetion::send(Buffer *buf) {
@@ -107,9 +135,15 @@ namespace network{
             if(loop_->is_in_loopThread()){
                 sendInLoop(buf);
             } else{
-                loop_->runInLoop(std::bind(&TcpConncetion::sendInLoop, this, buf));
+                std::function<void(const std::string &)> fp =
+                        [this](const std::string &str) { this->sendInLoop(str); };
+                loop_->runInLoop(std::bind(fp, buf));
             }
         }
+    }
+
+    void TcpConncetion::sendInLoop(const std::string &message) {
+        sendInLoop(message.data(), message.size());
     }
 
     void TcpConncetion::sendInLoop(const void *data, size_t len) {
@@ -149,45 +183,7 @@ namespace network{
         }
     }
 
-    void TcpConncetion::sendInLoop(const std::string &buf) {
-        ssize_t nwrote = 0;
-        size_t remaining = buf.size();
-        bool fault_error = false;
 
-        if(state_ == kDisconnected){
-            return;
-        }
-
-        if(!channel_->isWriting() && outputBuffer_.readableBytes() == 0){
-            nwrote = ::write(channel_->fd(), buf.c_str(), buf.size());
-            if(nwrote > 0){
-                remaining = buf.size() - nwrote;
-                if(0 == remaining && writeCompleteCallBack_){
-                    loop_->queueInLoop(std::bind(TcpConncetion::writeCompleteCallBack_, shared_from_this()));
-                }
-            } else{
-                nwrote = 0;
-                if(errno != EWOULDBLOCK){
-                    if(errno == EPIPE || errno == ECONNRESET){
-                        fault_error = true;
-                    }
-                }
-            }
-        }
-        //当前write没有把数据全部发送出去，剩余数据需要保存到缓冲区，
-        //然后给channel注册epollout，poller发现tcp缓冲区仍有数据，会调用handle write
-        if(!fault_error && remaining > 0){
-            size_t oldLen = outputBuffer_.readableBytes();
-            if(oldLen + remaining > highWaterSize_ && oldLen < highWaterSize_){
-                loop_->queueInLoop(std::bind(TcpConncetion::hightWaterMarkCallBack_, shared_from_this(), oldLen + remaining));
-            }
-
-            outputBuffer_.append(buf.c_str() + nwrote, remaining);
-            if(!channel_->isWriting()){
-                channel_->enableWriting();
-            }
-        }
-    }
 
     void TcpConncetion::connectEstablish(){
         setState(kConnected);
